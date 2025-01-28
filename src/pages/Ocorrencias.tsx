@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { Plus, Edit, Trash2, CheckCircle, XCircle } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -26,7 +26,7 @@ interface Occurrence {
     outros: boolean
   }
   description: string
-  status: 'gravada' | 'enviada'
+  status: 'gravada' | 'enviada' | 'aceita' | 'recusada'
 }
 
 const Ocorrencias = () => {
@@ -92,6 +92,45 @@ const Ocorrencias = () => {
       materialForaEspec: false,
       faltaLimpeza: false,
       outros: false,
+    })
+  }
+
+  const handleEdit = (id: string) => {
+    toast({
+      title: "Editar ocorrência",
+      description: "Funcionalidade em desenvolvimento",
+    })
+  }
+
+  const handleDelete = (id: string) => {
+    setOccurrences(prev => prev.filter(occurrence => occurrence.id !== id))
+    toast({
+      title: "Ocorrência excluída",
+      description: "A ocorrência foi removida com sucesso",
+    })
+  }
+
+  const handleAcceptResponse = (id: string) => {
+    setOccurrences(prev => prev.map(occurrence => 
+      occurrence.id === id 
+        ? { ...occurrence, status: 'aceita' as const } 
+        : occurrence
+    ))
+    toast({
+      title: "Resposta aceita",
+      description: "A resposta foi aceita com sucesso",
+    })
+  }
+
+  const handleRejectResponse = (id: string) => {
+    setOccurrences(prev => prev.map(occurrence => 
+      occurrence.id === id 
+        ? { ...occurrence, status: 'recusada' as const } 
+        : occurrence
+    ))
+    toast({
+      title: "Resposta recusada",
+      description: "A resposta foi recusada",
     })
   }
 
@@ -196,6 +235,7 @@ const Ocorrencias = () => {
                 <TableHead>Tipos</TableHead>
                 <TableHead>Descrição</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -206,10 +246,51 @@ const Ocorrencias = () => {
                   <TableCell>{occurrence.description}</TableCell>
                   <TableCell>
                     <Badge 
-                      variant={occurrence.status === 'enviada' ? 'default' : 'secondary'}
+                      variant={
+                        occurrence.status === 'enviada' ? 'default' :
+                        occurrence.status === 'aceita' ? 'success' :
+                        occurrence.status === 'recusada' ? 'destructive' :
+                        'secondary'
+                      }
                     >
-                      {occurrence.status === 'enviada' ? 'Enviada' : 'Gravada'}
+                      {occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
                     </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEdit(occurrence.id)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(occurrence.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                      {occurrence.status === 'enviada' && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleAcceptResponse(occurrence.id)}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleRejectResponse(occurrence.id)}
+                          >
+                            <XCircle className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
