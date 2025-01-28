@@ -6,11 +6,34 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+
+interface Occurrence {
+  id: string
+  date: string
+  types: {
+    faltaMaterial: boolean
+    materialForaEspec: boolean
+    faltaLimpeza: boolean
+    outros: boolean
+  }
+  description: string
+  status: 'gravada' | 'enviada'
+}
 
 const Ocorrencias = () => {
   const [open, setOpen] = useState(false)
   const [description, setDescription] = useState("")
   const { toast } = useToast()
+  const [occurrences, setOccurrences] = useState<Occurrence[]>([])
   
   const [selectedItems, setSelectedItems] = useState({
     faltaMaterial: false,
@@ -18,6 +41,15 @@ const Ocorrencias = () => {
     faltaLimpeza: false,
     outros: false,
   })
+
+  const getOccurrenceTypes = (types: Occurrence['types']) => {
+    const selectedTypes = []
+    if (types.faltaMaterial) selectedTypes.push('Falta de material')
+    if (types.materialForaEspec) selectedTypes.push('Material fora da especificação')
+    if (types.faltaLimpeza) selectedTypes.push('Falta de limpeza')
+    if (types.outros) selectedTypes.push('Outros')
+    return selectedTypes.join(', ')
+  }
 
   const handleSubmit = (action: 'save' | 'send') => {
     if (!Object.values(selectedItems).some(value => value)) {
@@ -38,14 +70,15 @@ const Ocorrencias = () => {
       return
     }
 
-    // Here you would handle the form submission
-    const currentDate = new Date().toLocaleString()
-    console.log({
-      date: currentDate,
+    const newOccurrence: Occurrence = {
+      id: Math.random().toString(36).substr(2, 9),
+      date: new Date().toLocaleString(),
       types: selectedItems,
-      description,
-      action
-    })
+      description: description.trim(),
+      status: action === 'save' ? 'gravada' : 'enviada'
+    }
+
+    setOccurrences(prev => [newOccurrence, ...prev])
 
     toast({
       title: action === 'save' ? "Ocorrência gravada" : "Ocorrência enviada para preposto",
@@ -153,9 +186,41 @@ const Ocorrencias = () => {
           </a>
         </div>
       </div>
-      <div className="bg-white p-6 rounded-lg shadow">
-        <p className="text-gray-600">Sistema de registro de ocorrências em desenvolvimento.</p>
-      </div>
+
+      {occurrences.length > 0 ? (
+        <div className="bg-white rounded-lg shadow">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Data</TableHead>
+                <TableHead>Tipos</TableHead>
+                <TableHead>Descrição</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {occurrences.map((occurrence) => (
+                <TableRow key={occurrence.id}>
+                  <TableCell>{occurrence.date}</TableCell>
+                  <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
+                  <TableCell>{occurrence.description}</TableCell>
+                  <TableCell>
+                    <Badge 
+                      variant={occurrence.status === 'enviada' ? 'default' : 'secondary'}
+                    >
+                      {occurrence.status === 'enviada' ? 'Enviada' : 'Gravada'}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <div className="bg-white p-6 rounded-lg shadow">
+          <p className="text-gray-600">Nenhuma ocorrência registrada.</p>
+        </div>
+      )}
     </div>
   )
 }
