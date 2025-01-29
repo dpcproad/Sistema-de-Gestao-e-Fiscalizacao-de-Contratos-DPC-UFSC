@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import {
@@ -27,6 +28,7 @@ interface Occurrence {
   }
   description: string
   status: 'gravada' | 'enviada' | 'aceita' | 'recusada'
+  attachments?: File[]
 }
 
 const Ocorrencias = () => {
@@ -34,6 +36,7 @@ const Ocorrencias = () => {
   const [description, setDescription] = useState("")
   const { toast } = useToast()
   const [occurrences, setOccurrences] = useState<Occurrence[]>([])
+  const [attachments, setAttachments] = useState<File[]>([])
   
   const [selectedItems, setSelectedItems] = useState({
     faltaMaterial: false,
@@ -75,7 +78,8 @@ const Ocorrencias = () => {
       date: new Date().toLocaleString(),
       types: selectedItems,
       description: description.trim(),
-      status: action === 'save' ? 'gravada' : 'enviada'
+      status: action === 'save' ? 'gravada' : 'enviada',
+      attachments: attachments
     }
 
     setOccurrences(prev => [newOccurrence, ...prev])
@@ -87,6 +91,7 @@ const Ocorrencias = () => {
 
     setOpen(false)
     setDescription("")
+    setAttachments([])
     setSelectedItems({
       faltaMaterial: false,
       materialForaEspec: false,
@@ -132,6 +137,13 @@ const Ocorrencias = () => {
       title: "Resposta recusada",
       description: "A resposta foi recusada",
     })
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files)
+      setAttachments(filesArray)
+    }
   }
 
   return (
@@ -206,6 +218,21 @@ const Ocorrencias = () => {
                     className="h-32"
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="attachments">Anexos</Label>
+                  <Input
+                    id="attachments"
+                    type="file"
+                    multiple
+                    onChange={handleFileChange}
+                    className="cursor-pointer"
+                  />
+                  {attachments.length > 0 && (
+                    <div className="text-sm text-muted-foreground">
+                      {attachments.length} arquivo(s) selecionado(s)
+                    </div>
+                  )}
+                </div>
                 <div className="text-sm text-muted-foreground">
                   Data e hora: {new Date().toLocaleString()}
                 </div>
@@ -248,9 +275,9 @@ const Ocorrencias = () => {
                     <Badge 
                       variant={
                         occurrence.status === 'enviada' ? 'default' :
-                        occurrence.status === 'aceita' ? 'success' :
+                        occurrence.status === 'aceita' ? 'secondary' :
                         occurrence.status === 'recusada' ? 'destructive' :
-                        'secondary'
+                        'outline'
                       }
                     >
                       {occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
