@@ -30,7 +30,7 @@ interface Occurrence {
     outros: boolean
   }
   description: string
-  status: 'gravada' | 'enviada' | 'aceita' | 'recusada'
+  status: 'gravada' | 'enviada' | 'resolvida' | 'nao_resolvida'
   attachments?: File[]
 }
 
@@ -130,24 +130,24 @@ const Ocorrencias = () => {
   const handleAcceptResponse = (id: string) => {
     setOccurrences(prev => prev.map(occurrence => 
       occurrence.id === id 
-        ? { ...occurrence, status: 'aceita' as const } 
+        ? { ...occurrence, status: 'resolvida' as const } 
         : occurrence
     ))
     toast({
       title: "Resposta aceita",
-      description: "A resposta foi aceita com sucesso",
+      description: "A ocorrência foi marcada como resolvida",
     })
   }
 
   const handleRejectResponse = (id: string) => {
     setOccurrences(prev => prev.map(occurrence => 
       occurrence.id === id 
-        ? { ...occurrence, status: 'recusada' as const } 
+        ? { ...occurrence, status: 'nao_resolvida' as const } 
         : occurrence
     ))
     toast({
       title: "Resposta recusada",
-      description: "A resposta foi recusada",
+      description: "A ocorrência foi marcada como não resolvida e incluída na Avaliação Mensal",
     })
   }
 
@@ -317,12 +317,14 @@ const Ocorrencias = () => {
                     <Badge 
                       variant={
                         occurrence.status === 'enviada' ? 'default' :
-                        occurrence.status === 'aceita' ? 'secondary' :
-                        occurrence.status === 'recusada' ? 'destructive' :
+                        occurrence.status === 'resolvida' ? 'secondary' :
+                        occurrence.status === 'nao_resolvida' ? 'destructive' :
                         'outline'
                       }
                     >
-                      {occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
+                      {occurrence.status === 'resolvida' ? 'Resolvida' :
+                       occurrence.status === 'nao_resolvida' ? 'Não resolvida' :
+                       occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
                     </Badge>
                   </TableCell>
                   <TableCell>
