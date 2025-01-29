@@ -24,6 +24,9 @@ interface Occurrence {
     faltaMaterial: boolean
     materialForaEspec: boolean
     faltaLimpeza: boolean
+    ausenciaSemReposicao: boolean
+    atrasoSalarios: boolean
+    atrasoINSSFGTS: boolean
     outros: boolean
   }
   description: string
@@ -42,6 +45,9 @@ const Ocorrencias = () => {
     faltaMaterial: false,
     materialForaEspec: false,
     faltaLimpeza: false,
+    ausenciaSemReposicao: false,
+    atrasoSalarios: false,
+    atrasoINSSFGTS: false,
     outros: false,
   })
 
@@ -50,6 +56,9 @@ const Ocorrencias = () => {
     if (types.faltaMaterial) selectedTypes.push('Falta de material')
     if (types.materialForaEspec) selectedTypes.push('Material fora da especificação')
     if (types.faltaLimpeza) selectedTypes.push('Falta de limpeza')
+    if (types.ausenciaSemReposicao) selectedTypes.push('Ausência sem reposição do(a) trabalhador(a) terceirizado(a)')
+    if (types.atrasoSalarios) selectedTypes.push('Atraso de salários e/ou benefícios (VA/VT)')
+    if (types.atrasoINSSFGTS) selectedTypes.push('Atraso de INSS e/ou FGTS')
     if (types.outros) selectedTypes.push('Outros')
     return selectedTypes.join(', ')
   }
@@ -96,6 +105,9 @@ const Ocorrencias = () => {
       faltaMaterial: false,
       materialForaEspec: false,
       faltaLimpeza: false,
+      ausenciaSemReposicao: false,
+      atrasoSalarios: false,
+      atrasoINSSFGTS: false,
       outros: false,
     })
   }
@@ -195,6 +207,36 @@ const Ocorrencias = () => {
                         }
                       />
                       <Label htmlFor="faltaLimpeza">Falta de limpeza</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="ausenciaSemReposicao" 
+                        checked={selectedItems.ausenciaSemReposicao}
+                        onCheckedChange={(checked) => 
+                          setSelectedItems(prev => ({...prev, ausenciaSemReposicao: checked as boolean}))
+                        }
+                      />
+                      <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a)</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="atrasoSalarios" 
+                        checked={selectedItems.atrasoSalarios}
+                        onCheckedChange={(checked) => 
+                          setSelectedItems(prev => ({...prev, atrasoSalarios: checked as boolean}))
+                        }
+                      />
+                      <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT)</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="atrasoINSSFGTS" 
+                        checked={selectedItems.atrasoINSSFGTS}
+                        onCheckedChange={(checked) => 
+                          setSelectedItems(prev => ({...prev, atrasoINSSFGTS: checked as boolean}))
+                        }
+                      />
+                      <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
