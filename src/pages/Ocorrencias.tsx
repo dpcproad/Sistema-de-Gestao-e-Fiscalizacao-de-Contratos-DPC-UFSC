@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { Plus, Edit, Trash2, CheckCircle, XCircle } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -32,6 +32,7 @@ interface Occurrence {
   description: string
   status: 'gravada' | 'enviada' | 'resolvida' | 'nao_resolvida'
   attachments?: File[]
+  responseDeadline: string
 }
 
 const Ocorrencias = () => {
@@ -50,6 +51,20 @@ const Ocorrencias = () => {
     atrasoINSSFGTS: false,
     outros: false,
   })
+
+  const calculateResponseDeadline = (types: Occurrence['types']): string => {
+    const currentDate = new Date()
+    let deadlineDate: Date
+
+    // Check if any of the 1-day deadline types are selected
+    if (types.faltaMaterial || types.materialForaEspec) {
+      deadlineDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000) // Add 1 day
+    } else {
+      deadlineDate = new Date(currentDate.getTime() + 2 * 60 * 60 * 1000) // Add 2 hours
+    }
+
+    return deadlineDate.toLocaleString()
+  }
 
   const getOccurrenceTypes = (types: Occurrence['types']) => {
     const selectedTypes = []
@@ -82,20 +97,23 @@ const Ocorrencias = () => {
       return
     }
 
+    const responseDeadline = calculateResponseDeadline(selectedItems)
+
     const newOccurrence: Occurrence = {
       id: Math.random().toString(36).substr(2, 9),
       date: new Date().toLocaleString(),
       types: selectedItems,
       description: description.trim(),
       status: action === 'save' ? 'gravada' : 'enviada',
-      attachments: attachments
+      attachments: attachments,
+      responseDeadline
     }
 
     setOccurrences(prev => [newOccurrence, ...prev])
 
     toast({
       title: action === 'save' ? "Ocorrência gravada" : "Ocorrência enviada para preposto",
-      description: "Ação realizada com sucesso",
+      description: `Prazo de resposta: ${responseDeadline}`,
     })
 
     setOpen(false)
@@ -173,6 +191,9 @@ const Ocorrencias = () => {
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Nova Ocorrência</DialogTitle>
+                <DialogDescription>
+                  Prazos de resposta: 1 dia para falta de material e material fora da especificação. 2 horas para as demais ocorrências.
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-4">
@@ -186,7 +207,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, faltaMaterial: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="faltaMaterial">Falta de material</Label>
+                      <Label htmlFor="faltaMaterial">Falta de material (1 dia)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -196,7 +217,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, materialForaEspec: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="materialForaEspec">Material fora da especificação</Label>
+                      <Label htmlFor="materialForaEspec">Material fora da especificação (1 dia)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -206,7 +227,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, faltaLimpeza: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="faltaLimpeza">Falta de limpeza</Label>
+                      <Label htmlFor="faltaLimpeza">Falta de limpeza (2 horas)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -216,7 +237,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, ausenciaSemReposicao: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a)</Label>
+                      <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a) (2 horas)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -226,7 +247,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, atrasoSalarios: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT)</Label>
+                      <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT) (2 horas)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -236,7 +257,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, atrasoINSSFGTS: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS</Label>
+                      <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS (2 horas)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -246,7 +267,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, outros: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="outros">Outros</Label>
+                      <Label htmlFor="outros">Outros (2 horas)</Label>
                     </div>
                   </div>
                 </div>
@@ -303,6 +324,7 @@ const Ocorrencias = () => {
                 <TableHead>Data</TableHead>
                 <TableHead>Tipos</TableHead>
                 <TableHead>Descrição</TableHead>
+                <TableHead>Prazo de Resposta</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Ações</TableHead>
               </TableRow>
@@ -313,6 +335,12 @@ const Ocorrencias = () => {
                   <TableCell>{occurrence.date}</TableCell>
                   <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
                   <TableCell>{occurrence.description}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      {occurrence.responseDeadline}
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <Badge 
                       variant={
