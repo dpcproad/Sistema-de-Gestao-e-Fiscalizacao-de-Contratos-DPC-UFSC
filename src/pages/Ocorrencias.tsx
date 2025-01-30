@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -191,9 +191,6 @@ const Ocorrencias = () => {
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Nova Ocorrência</DialogTitle>
-                <DialogDescription>
-                  Prazos de resposta: 1 dia para falta de material e material fora da especificação. 2 horas para as demais ocorrências.
-                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-4">
@@ -207,7 +204,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, faltaMaterial: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="faltaMaterial">Falta de material (1 dia)</Label>
+                      <Label htmlFor="faltaMaterial">Falta de material</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -217,7 +214,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, materialForaEspec: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="materialForaEspec">Material fora da especificação (1 dia)</Label>
+                      <Label htmlFor="materialForaEspec">Material fora da especificação</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -227,7 +224,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, faltaLimpeza: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="faltaLimpeza">Falta de limpeza (2 horas)</Label>
+                      <Label htmlFor="faltaLimpeza">Falta de limpeza</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -237,7 +234,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, ausenciaSemReposicao: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a) (2 horas)</Label>
+                      <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -247,7 +244,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, atrasoSalarios: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT) (2 horas)</Label>
+                      <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -257,7 +254,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, atrasoINSSFGTS: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS (2 horas)</Label>
+                      <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox 
@@ -267,7 +264,7 @@ const Ocorrencias = () => {
                           setSelectedItems(prev => ({...prev, outros: checked as boolean}))
                         }
                       />
-                      <Label htmlFor="outros">Outros (2 horas)</Label>
+                      <Label htmlFor="outros">Outros</Label>
                     </div>
                   </div>
                 </div>
@@ -295,9 +292,6 @@ const Ocorrencias = () => {
                       {attachments.length} arquivo(s) selecionado(s)
                     </div>
                   )}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Data e hora: {new Date().toLocaleString()}
                 </div>
                 <div className="flex gap-4 justify-end">
                   <Button variant="outline" onClick={() => handleSubmit('save')}>
