@@ -196,75 +196,117 @@ const Ocorrencias = () => {
                 <div className="space-y-4">
                   <Label>Tipo de Ocorrência</Label>
                   <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="faltaMaterial" 
-                        checked={selectedItems.faltaMaterial}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, faltaMaterial: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="faltaMaterial">Falta de material</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="faltaMaterial" 
+                          checked={selectedItems.faltaMaterial}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, faltaMaterial: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="faltaMaterial">Falta de material</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        24h
+                      </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="materialForaEspec" 
-                        checked={selectedItems.materialForaEspec}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, materialForaEspec: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="materialForaEspec">Material fora da especificação</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="materialForaEspec" 
+                          checked={selectedItems.materialForaEspec}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, materialForaEspec: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="materialForaEspec">Material fora da especificação</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        24h
+                      </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="faltaLimpeza" 
-                        checked={selectedItems.faltaLimpeza}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, faltaLimpeza: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="faltaLimpeza">Falta de limpeza</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="faltaLimpeza" 
+                          checked={selectedItems.faltaLimpeza}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, faltaLimpeza: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="faltaLimpeza">Falta de limpeza</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        2h
+                      </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="ausenciaSemReposicao" 
-                        checked={selectedItems.ausenciaSemReposicao}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, ausenciaSemReposicao: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a)</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="ausenciaSemReposicao" 
+                          checked={selectedItems.ausenciaSemReposicao}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, ausenciaSemReposicao: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="ausenciaSemReposicao">Ausência sem reposição do(a) trabalhador(a) terceirizado(a)</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        2h
+                      </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="atrasoSalarios" 
-                        checked={selectedItems.atrasoSalarios}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, atrasoSalarios: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT)</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="atrasoSalarios" 
+                          checked={selectedItems.atrasoSalarios}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, atrasoSalarios: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="atrasoSalarios">Atraso de salários e/ou benefícios (VA/VT)</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        2h
+                      </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="atrasoINSSFGTS" 
-                        checked={selectedItems.atrasoINSSFGTS}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, atrasoINSSFGTS: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="atrasoINSSFGTS" 
+                          checked={selectedItems.atrasoINSSFGTS}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, atrasoINSSFGTS: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="atrasoINSSFGTS">Atraso de INSS e/ou FGTS</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        2h
+                      </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="outros" 
-                        checked={selectedItems.outros}
-                        onCheckedChange={(checked) => 
-                          setSelectedItems(prev => ({...prev, outros: checked as boolean}))
-                        }
-                      />
-                      <Label htmlFor="outros">Outros</Label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="outros" 
+                          checked={selectedItems.outros}
+                          onCheckedChange={(checked) => 
+                            setSelectedItems(prev => ({...prev, outros: checked as boolean}))
+                          }
+                        />
+                        <Label htmlFor="outros">Outros</Label>
+                      </div>
+                      <span className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        2h
+                      </span>
                     </div>
                   </div>
                 </div>
