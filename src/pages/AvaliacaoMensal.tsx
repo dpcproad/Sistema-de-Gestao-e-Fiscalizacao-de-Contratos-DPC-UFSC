@@ -37,6 +37,30 @@ const AvaliacaoMensal = () => {
   const allOccurrences: Occurrence[] = JSON.parse(localStorage.getItem('occurrences') || '[]')
   const unresolvedOccurrences = allOccurrences.filter(occ => occ.status === 'nao_resolvida')
 
+  const countTotalByType = () => {
+    const totals = {
+      faltaMaterial: 0,
+      materialForaEspec: 0,
+      faltaLimpeza: 0,
+      ausenciaSemReposicao: 0,
+      atrasoSalarios: 0,
+      atrasoINSSFGTS: 0,
+      outros: 0
+    }
+
+    unresolvedOccurrences.forEach(occurrence => {
+      if (occurrence.types.faltaMaterial) totals.faltaMaterial++
+      if (occurrence.types.materialForaEspec) totals.materialForaEspec++
+      if (occurrence.types.faltaLimpeza) totals.faltaLimpeza++
+      if (occurrence.types.ausenciaSemReposicao) totals.ausenciaSemReposicao++
+      if (occurrence.types.atrasoSalarios) totals.atrasoSalarios++
+      if (occurrence.types.atrasoINSSFGTS) totals.atrasoINSSFGTS++
+      if (occurrence.types.outros) totals.outros++
+    })
+
+    return totals
+  }
+
   const countByMonthAndType = () => {
     const counts: { [key: string]: OccurrenceCount } = {}
     
@@ -70,6 +94,7 @@ const AvaliacaoMensal = () => {
   }
 
   const monthlyData = countByMonthAndType()
+  const totalCounts = countTotalByType()
 
   const chartConfig = {
     faltaMaterial: { label: 'Falta de material', theme: { light: '#ef4444', dark: '#ef4444' } },
@@ -91,6 +116,79 @@ const AvaliacaoMensal = () => {
       </div>
       
       <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Falta de Material
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.faltaMaterial}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Material Fora da Especificação
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.materialForaEspec}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Falta de Limpeza
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.faltaLimpeza}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Ausência sem Reposição
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.ausenciaSemReposicao}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Atraso de Salários
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.atrasoSalarios}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Atraso de INSS/FGTS
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.atrasoINSSFGTS}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Outros
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalCounts.outros}</div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Card>
           <CardHeader>
             <CardTitle>Ocorrências por Tipo e Mês</CardTitle>
