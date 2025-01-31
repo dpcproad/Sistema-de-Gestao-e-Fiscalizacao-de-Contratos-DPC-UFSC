@@ -6,20 +6,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useState } from "react"
 
 interface Occurrence {
   id: string
@@ -42,10 +33,6 @@ const AvaliacaoMensal = () => {
   const { toast } = useToast()
   const allOccurrences: Occurrence[] = JSON.parse(localStorage.getItem('occurrences') || '[]')
   const unresolvedOccurrences = allOccurrences.filter(occ => occ.status === 'nao_resolvida')
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [selectedType, setSelectedType] = useState('')
-  const [selectedStatus, setSelectedStatus] = useState('')
 
   const countTotalByType = () => {
     const totals = {
@@ -82,13 +69,6 @@ const AvaliacaoMensal = () => {
     toast({
       title: "Avaliação Mensal Enviada",
       description: `A avaliação mensal de ${currentMonth} foi enviada com sucesso.`,
-    })
-  }
-
-  const handleGenerateReport = () => {
-    toast({
-      title: "Relatório Gerado",
-      description: "O relatório de pendências foi gerado com os filtros selecionados.",
     })
   }
 
@@ -175,79 +155,7 @@ const AvaliacaoMensal = () => {
           </Card>
         </div>
 
-        <div className="flex justify-between">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                Gerar Relatório de Pendências
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Gerar Relatório de Pendências</DialogTitle>
-                <DialogDescription>
-                  Selecione os filtros para gerar o relatório.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="startDate">Data de Início</label>
-                    <Input
-                      id="startDate"
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="endDate">Data Fim</label>
-                    <Input
-                      id="endDate"
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="type">Tipo</label>
-                  <Select value={selectedType} onValueChange={setSelectedType}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o tipo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="faltaMaterial">Falta de Material</SelectItem>
-                      <SelectItem value="materialForaEspec">Material Fora da Especificação</SelectItem>
-                      <SelectItem value="faltaLimpeza">Falta de Limpeza</SelectItem>
-                      <SelectItem value="ausenciaSemReposicao">Ausência sem Reposição</SelectItem>
-                      <SelectItem value="atrasoSalarios">Atraso de Salários</SelectItem>
-                      <SelectItem value="atrasoINSSFGTS">Atraso de INSS/FGTS</SelectItem>
-                      <SelectItem value="outros">Outros</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="status">Status</label>
-                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="gravada">Gravada</SelectItem>
-                      <SelectItem value="enviada">Enviada</SelectItem>
-                      <SelectItem value="resolvida">Resolvida</SelectItem>
-                      <SelectItem value="nao_resolvida">Não Resolvida</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button onClick={handleGenerateReport}>Gerar Relatório</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-
+        <div className="flex justify-end">
           <Dialog>
             <DialogTrigger asChild>
               <Button>
