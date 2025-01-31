@@ -52,8 +52,7 @@ const Ocorrencias = () => {
   const [endDate, setEndDate] = useState('')
   const [selectedType, setSelectedType] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
-  
-  const selectedItems = {
+  const [selectedItems, setSelectedItems] = useState({
     faltaMaterial: false,
     materialForaEspec: false,
     faltaLimpeza: false,
@@ -61,7 +60,7 @@ const Ocorrencias = () => {
     atrasoSalarios: false,
     atrasoINSSFGTS: false,
     outros: false,
-  }
+  })
 
   const calculateResponseDeadline = (types: Occurrence['types']): string => {
     const currentDate = new Date()
