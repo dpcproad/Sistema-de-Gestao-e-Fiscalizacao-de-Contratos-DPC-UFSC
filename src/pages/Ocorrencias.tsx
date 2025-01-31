@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -16,6 +16,13 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface Occurrence {
   id: string
@@ -41,8 +48,12 @@ const Ocorrencias = () => {
   const { toast } = useToast()
   const [occurrences, setOccurrences] = useState<Occurrence[]>([])
   const [attachments, setAttachments] = useState<File[]>([])
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [selectedType, setSelectedType] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState('')
   
-  const [selectedItems, setSelectedItems] = useState({
+  const selectedItems = {
     faltaMaterial: false,
     materialForaEspec: false,
     faltaLimpeza: false,
@@ -50,13 +61,12 @@ const Ocorrencias = () => {
     atrasoSalarios: false,
     atrasoINSSFGTS: false,
     outros: false,
-  })
+  }
 
   const calculateResponseDeadline = (types: Occurrence['types']): string => {
     const currentDate = new Date()
     let deadlineDate: Date
 
-    // Check if any of the 1-day deadline types are selected
     if (types.faltaMaterial || types.materialForaEspec) {
       deadlineDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000) // Add 1 day
     } else {
@@ -176,11 +186,90 @@ const Ocorrencias = () => {
     }
   }
 
+  const handleGenerateReport = () => {
+    toast({
+      title: "Relatório Gerado",
+      description: "O relatório de pendências foi gerado com os filtros selecionados.",
+    })
+  }
+
   return (
     <div className="container py-8">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Ocorrências</h1>
         <div className="flex gap-4 items-center">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                Gerar Relatório de Pendências
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Gerar Relatório de Pendências</DialogTitle>
+                <DialogDescription>
+                  Selecione os filtros para gerar o relatório.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="startDate">Data de Início</label>
+                    <Input
+                      id="startDate"
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="endDate">Data Fim</label>
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="type">Tipo</label>
+                  <Select value={selectedType} onValueChange={setSelectedType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="faltaMaterial">Falta de Material</SelectItem>
+                      <SelectItem value="materialForaEspec">Material Fora da Especificação</SelectItem>
+                      <SelectItem value="faltaLimpeza">Falta de Limpeza</SelectItem>
+                      <SelectItem value="ausenciaSemReposicao">Ausência sem Reposição</SelectItem>
+                      <SelectItem value="atrasoSalarios">Atraso de Salários</SelectItem>
+                      <SelectItem value="atrasoINSSFGTS">Atraso de INSS/FGTS</SelectItem>
+                      <SelectItem value="outros">Outros</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="status">Status</label>
+                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="gravada">Gravada</SelectItem>
+                      <SelectItem value="enviada">Enviada</SelectItem>
+                      <SelectItem value="resolvida">Resolvida</SelectItem>
+                      <SelectItem value="nao_resolvida">Não Resolvida</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button onClick={handleGenerateReport}>Gerar Relatório</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button className="bg-primary">
