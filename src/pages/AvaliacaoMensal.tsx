@@ -1,7 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 interface Occurrence {
   id: string
@@ -52,7 +61,11 @@ const AvaliacaoMensal = () => {
   const totalCounts = countTotalByType()
   const currentMonth = new Date().toLocaleString('pt-BR', { month: 'long', year: 'numeric' })
 
-  const handleSendMonthlyEvaluation = () => {
+  const handleReviewOccurrences = () => {
+    window.location.href = '/ocorrencias'
+  }
+
+  const handleSignAndSend = () => {
     toast({
       title: "Avaliação Mensal Enviada",
       description: `A avaliação mensal de ${currentMonth} foi enviada com sucesso.`,
@@ -143,9 +156,36 @@ const AvaliacaoMensal = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button onClick={handleSendMonthlyEvaluation}>
-            Enviar Avaliação de {currentMonth}
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                Enviar Avaliação de {currentMonth}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Enviar Avaliação Mensal</DialogTitle>
+                <DialogDescription>
+                  Escolha uma das opções abaixo para prosseguir com a avaliação mensal.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col gap-4 py-4">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleReviewOccurrences}
+                >
+                  Revisar ocorrências
+                </Button>
+                <Button 
+                  className="w-full justify-start"
+                  onClick={handleSignAndSend}
+                >
+                  Assinar e enviar avaliação
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
