@@ -8,6 +8,7 @@ import Ocorrencias from "./pages/Ocorrencias";
 import AvaliacaoMensal from "./pages/AvaliacaoMensal";
 import KitFiscalizacao from "./pages/KitFiscalizacao";
 import FaleComGestao from "./pages/FaleComGestao";
+import CadastroTrabalhadores from "./pages/CadastroTrabalhadores";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/avaliacao-mensal" element={<AvaliacaoMensal />} />
           <Route path="/kit-fiscalizacao" element={<KitFiscalizacao />} />
           <Route path="/fale-com-gestao" element={<FaleComGestao />} />
+          <Route path="/cadastro-trabalhadores" element={<CadastroTrabalhadores />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

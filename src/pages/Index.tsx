@@ -1,4 +1,4 @@
-import { ClipboardList, BarChart2, FileBox, MessageCircle } from "lucide-react";
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 
 const Index = () => {
@@ -12,7 +12,7 @@ const Index = () => {
           <p className="text-gray-600">DPC/PROAD</p>
         </header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
           <MenuCard
             title="Ocorrências"
             description="Registre e acompanhe ocorrências relacionadas aos contratos"
@@ -36,6 +36,12 @@ const Index = () => {
             description="Chat direto com gestores e fiscais do contrato"
             icon={MessageCircle}
             to="/fale-com-gestao"
+          />
+          <MenuCard
+            title="Cadastro de Trabalhadores"
+            description="Gerencie o cadastro dos trabalhadores terceirizados"
+            icon={Users}
+            to="/cadastro-trabalhadores"
           />
         </div>
       </div>
