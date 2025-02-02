@@ -11,26 +11,34 @@ import FaleComGestao from "./pages/FaleComGestao";
 import CadastroTrabalhadores from "./pages/CadastroTrabalhadores";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+function App() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000,
+      },
+    },
+  });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/ocorrencias" element={<Ocorrencias />} />
-          <Route path="/avaliacao-mensal" element={<AvaliacaoMensal />} />
-          <Route path="/kit-fiscalizacao" element={<KitFiscalizacao />} />
-          <Route path="/fale-com-gestao" element={<FaleComGestao />} />
-          <Route path="/cadastro-trabalhadores" element={<CadastroTrabalhadores />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/ocorrencias" element={<Ocorrencias />} />
+            <Route path="/avaliacao-mensal" element={<AvaliacaoMensal />} />
+            <Route path="/kit-fiscalizacao" element={<KitFiscalizacao />} />
+            <Route path="/fale-com-gestao" element={<FaleComGestao />} />
+            <Route path="/cadastro-trabalhadores" element={<CadastroTrabalhadores />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
