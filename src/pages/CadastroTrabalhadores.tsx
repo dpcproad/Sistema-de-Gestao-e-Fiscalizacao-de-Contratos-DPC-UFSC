@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { UserPlus, Upload } from "lucide-react";
 import {
@@ -11,10 +11,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import * as XLSX from 'xlsx';
 
 const CadastroTrabalhadores = () => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,10 +28,61 @@ const CadastroTrabalhadores = () => {
   };
 
   const handleUpload = () => {
-    toast({
-      title: "Upload de dados",
-      description: "Funcionalidade em desenvolvimento.",
-    });
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const processExcelFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = e.target?.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        console.log('Dados importados:', jsonData);
+        
+        toast({
+          title: "Dados importados com sucesso",
+          description: `${jsonData.length} registros foram importados.`,
+        });
+      } catch (error) {
+        toast({
+          title: "Erro na importação",
+          description: "Ocorreu um erro ao processar o arquivo. Verifique se o formato está correto.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    reader.onerror = () => {
+      toast({
+        title: "Erro na leitura",
+        description: "Não foi possível ler o arquivo selecionado.",
+        variant: "destructive",
+      });
+    };
+
+    reader.readAsBinaryString(file);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || 
+          file.type === "application/vnd.ms-excel") {
+        processExcelFile(file);
+      } else {
+        toast({
+          title: "Formato inválido",
+          description: "Por favor, selecione um arquivo Excel (.xlsx ou .xls)",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (
@@ -41,6 +94,13 @@ const CadastroTrabalhadores = () => {
               Cadastro de Trabalhadores Terceirizados
             </h1>
             <div className="flex gap-4">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept=".xlsx,.xls"
+                className="hidden"
+              />
               <Button variant="outline" onClick={handleUpload}>
                 <Upload className="mr-2 h-5 w-5" />
                 Incluir dados
