@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
+import { UserPlus, Upload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,13 @@ const CadastroTrabalhadores = () => {
     });
   };
 
+  const handleUpload = () => {
+    toast({
+      title: "Upload de dados",
+      description: "Funcionalidade em desenvolvimento.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container py-8">
@@ -33,40 +40,46 @@ const CadastroTrabalhadores = () => {
             <h1 className="text-3xl font-bold text-gray-900">
               Cadastro de Trabalhadores Terceirizados
             </h1>
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <UserPlus className="mr-2 h-5 w-5" />
-                  Novo Trabalhador
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Cadastrar Novo Trabalhador</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="nome">Nome Completo</Label>
-                    <Input id="nome" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cpf">CPF</Label>
-                    <Input id="cpf" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="funcao">Função</Label>
-                    <Input id="funcao" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="contrato">Contrato</Label>
-                    <Input id="contrato" required />
-                  </div>
-                  <div className="pt-4 flex justify-end">
-                    <Button type="submit">Cadastrar</Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <div className="flex gap-4">
+              <Button variant="outline" onClick={handleUpload}>
+                <Upload className="mr-2 h-5 w-5" />
+                Incluir dados
+              </Button>
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                  <Button>
+                    <UserPlus className="mr-2 h-5 w-5" />
+                    Novo Trabalhador
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Cadastrar Novo Trabalhador</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="nome">Nome Completo</Label>
+                      <Input id="nome" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="cpf">CPF</Label>
+                      <Input id="cpf" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="funcao">Função</Label>
+                      <Input id="funcao" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="contrato">Contrato</Label>
+                      <Input id="contrato" required />
+                    </div>
+                    <div className="pt-4 flex justify-end">
+                      <Button type="submit">Cadastrar</Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
