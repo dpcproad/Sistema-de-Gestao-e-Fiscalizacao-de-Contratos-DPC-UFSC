@@ -11,10 +11,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import * as XLSX from 'xlsx';
+
+interface Worker {
+  nome: string;
+  cpf: string;
+  cargo: string;
+  horario: string;
+  itemContrato: number;
+  dataAdmissao: string;
+  naoOptanteVT: string;
+}
 
 const CadastroTrabalhadores = () => {
   const [open, setOpen] = useState(false);
+  const [workers, setWorkers] = useState<Worker[]>([]);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -43,7 +62,17 @@ const CadastroTrabalhadores = () => {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        console.log('Dados importados:', jsonData);
+        const formattedData: Worker[] = jsonData.map((row: any) => ({
+          nome: row['Nome '] || '',
+          cpf: row['CPF'] || '',
+          cargo: row['Cargo'] || '',
+          horario: row['Horário'] || '',
+          itemContrato: row['item do contrato'] || 0,
+          dataAdmissao: row['data de admissão']?.toString() || '',
+          naoOptanteVT: row['Não Optante de VT'] || '',
+        }));
+
+        setWorkers(formattedData);
         
         toast({
           title: "Dados importados com sucesso",
@@ -142,10 +171,41 @@ const CadastroTrabalhadores = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600 text-center">
-              Nenhum trabalhador cadastrado ainda. Clique em "Novo Trabalhador" para começar.
-            </p>
+          <div className="bg-white rounded-lg shadow">
+            {workers.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nome</TableHead>
+                    <TableHead>CPF</TableHead>
+                    <TableHead>Cargo</TableHead>
+                    <TableHead>Horário</TableHead>
+                    <TableHead>Item do Contrato</TableHead>
+                    <TableHead>Data de Admissão</TableHead>
+                    <TableHead>Não Optante VT</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {workers.map((worker, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{worker.nome}</TableCell>
+                      <TableCell>{worker.cpf}</TableCell>
+                      <TableCell>{worker.cargo}</TableCell>
+                      <TableCell>{worker.horario}</TableCell>
+                      <TableCell>{worker.itemContrato}</TableCell>
+                      <TableCell>{worker.dataAdmissao}</TableCell>
+                      <TableCell>{worker.naoOptanteVT}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <div className="p-6">
+                <p className="text-gray-600 text-center">
+                  Nenhum trabalhador cadastrado ainda. Clique em "Novo Trabalhador" para começar.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
