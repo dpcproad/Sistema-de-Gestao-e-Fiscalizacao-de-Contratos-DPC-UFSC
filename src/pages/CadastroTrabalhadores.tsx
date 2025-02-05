@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { UserPlus, Upload } from "lucide-react";
+import { UserPlus, Upload, Pencil, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +8,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
@@ -28,8 +38,12 @@ interface ExcelData {
 
 const CadastroTrabalhadores = () => {
   const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [workers, setWorkers] = useState<ExcelData[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
+  const [selectedWorker, setSelectedWorker] = useState<ExcelData | null>(null);
+  const [selectedWorkerIndex, setSelectedWorkerIndex] = useState<number>(-1);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,7 +66,6 @@ const CadastroTrabalhadores = () => {
     if (!value) return '';
     
     try {
-      // Check if the value is a date
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
         return format(date, 'dd/MM/yyyy');
@@ -61,6 +74,51 @@ const CadastroTrabalhadores = () => {
     } catch {
       return value.toString();
     }
+  };
+
+  const handleEdit = (worker: ExcelData, index: number) => {
+    setSelectedWorker(worker);
+    setSelectedWorkerIndex(index);
+    setEditOpen(true);
+  };
+
+  const handleDelete = (worker: ExcelData, index: number) => {
+    setSelectedWorker(worker);
+    setSelectedWorkerIndex(index);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedWorkerIndex > -1) {
+      const newWorkers = [...workers];
+      newWorkers.splice(selectedWorkerIndex, 1);
+      setWorkers(newWorkers);
+      setDeleteDialogOpen(false);
+      toast({
+        title: "Trabalhador excluído",
+        description: "O registro foi removido com sucesso.",
+      });
+    }
+  };
+
+  const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const updatedWorker: ExcelData = { ...selectedWorker };
+    
+    columns.forEach(column => {
+      updatedWorker[column] = formData.get(column) || '';
+    });
+
+    const newWorkers = [...workers];
+    newWorkers[selectedWorkerIndex] = updatedWorker;
+    setWorkers(newWorkers);
+    setEditOpen(false);
+    
+    toast({
+      title: "Trabalhador atualizado",
+      description: "Os dados foram atualizados com sucesso.",
+    });
   };
 
   const processExcelFile = (file: File) => {
@@ -195,6 +253,7 @@ const CadastroTrabalhadores = () => {
                     {columns.map((column, index) => (
                       <TableHead key={index}>{column}</TableHead>
                     ))}
+                    <TableHead className="w-[100px]">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -205,6 +264,24 @@ const CadastroTrabalhadores = () => {
                           {worker[column]}
                         </TableCell>
                       ))}
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleEdit(worker, rowIndex)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(worker, rowIndex)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -219,6 +296,48 @@ const CadastroTrabalhadores = () => {
           </div>
         </div>
       </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Editar Trabalhador</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleEditSubmit} className="space-y-4">
+            {columns.map((column, index) => (
+              <div key={index} className="space-y-2">
+                <Label htmlFor={column}>{column}</Label>
+                <Input
+                  id={column}
+                  name={column}
+                  defaultValue={selectedWorker?.[column] || ''}
+                />
+              </div>
+            ))}
+            <div className="pt-4 flex justify-end">
+              <Button type="submit">Salvar Alterações</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir este trabalhador? Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>
+              Confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
