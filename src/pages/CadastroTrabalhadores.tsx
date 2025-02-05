@@ -20,20 +20,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import * as XLSX from 'xlsx';
+import { format } from 'date-fns';
 
-interface Worker {
-  nome: string;
-  cpf: string;
-  cargo: string;
-  horario: string;
-  itemContrato: number;
-  dataAdmissao: string;
-  naoOptanteVT: string;
+interface ExcelData {
+  [key: string]: any;
 }
 
 const CadastroTrabalhadores = () => {
   const [open, setOpen] = useState(false);
-  const [workers, setWorkers] = useState<Worker[]>([]);
+  const [workers, setWorkers] = useState<ExcelData[]>([]);
+  const [columns, setColumns] = useState<string[]>([]);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,6 +48,21 @@ const CadastroTrabalhadores = () => {
     }
   };
 
+  const formatDateValue = (value: any): string => {
+    if (!value) return '';
+    
+    try {
+      // Check if the value is a date
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd/MM/yyyy');
+      }
+      return value.toString();
+    } catch {
+      return value.toString();
+    }
+  };
+
   const processExcelFile = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -62,17 +73,22 @@ const CadastroTrabalhadores = () => {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        const formattedData: Worker[] = jsonData.map((row: any) => ({
-          nome: row['Nome '] || '',
-          cpf: row['CPF'] || '',
-          cargo: row['Cargo'] || '',
-          horario: row['Horário'] || '',
-          itemContrato: row['item do contrato'] || 0,
-          dataAdmissao: row['data de admissão']?.toString() || '',
-          naoOptanteVT: row['Não Optante de VT'] || '',
-        }));
+        if (jsonData.length > 0) {
+          // Get all column headers from the first row
+          const headers = Object.keys(jsonData[0]);
+          setColumns(headers);
 
-        setWorkers(formattedData);
+          // Process all data
+          const formattedData = jsonData.map((row: any) => {
+            const formattedRow: ExcelData = {};
+            headers.forEach(header => {
+              formattedRow[header] = formatDateValue(row[header]);
+            });
+            return formattedRow;
+          });
+
+          setWorkers(formattedData);
+        }
         
         toast({
           title: "Dados importados com sucesso",
@@ -171,30 +187,24 @@ const CadastroTrabalhadores = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow">
+          <div className="bg-white rounded-lg shadow overflow-x-auto">
             {workers.length > 0 ? (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Nome</TableHead>
-                    <TableHead>CPF</TableHead>
-                    <TableHead>Cargo</TableHead>
-                    <TableHead>Horário</TableHead>
-                    <TableHead>Item do Contrato</TableHead>
-                    <TableHead>Data de Admissão</TableHead>
-                    <TableHead>Não Optante VT</TableHead>
+                    {columns.map((column, index) => (
+                      <TableHead key={index}>{column}</TableHead>
+                    ))}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {workers.map((worker, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{worker.nome}</TableCell>
-                      <TableCell>{worker.cpf}</TableCell>
-                      <TableCell>{worker.cargo}</TableCell>
-                      <TableCell>{worker.horario}</TableCell>
-                      <TableCell>{worker.itemContrato}</TableCell>
-                      <TableCell>{worker.dataAdmissao}</TableCell>
-                      <TableCell>{worker.naoOptanteVT}</TableCell>
+                  {workers.map((worker, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      {columns.map((column, colIndex) => (
+                        <TableCell key={`${rowIndex}-${colIndex}`}>
+                          {worker[column]}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   ))}
                 </TableBody>
