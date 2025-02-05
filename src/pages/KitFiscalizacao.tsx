@@ -17,7 +17,7 @@ const KitFiscalizacao = () => {
         <Button
           variant="default"
           className="w-full sm:w-auto"
-          onClick={() => window.open('https://dpc.proad.ufsc.br/fiscalizacao-de-contratos/', '_blank')}
+          onClick={() => window.open('https://arquivos.ufsc.br/d/6a6f3f1aa8034e09902a/', '_blank')}
         >
           <ExternalLink className="mr-2" />
           Acessar Kit DPC/PROAD
