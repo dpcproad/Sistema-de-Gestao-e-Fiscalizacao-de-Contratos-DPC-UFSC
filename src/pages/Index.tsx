@@ -1,3 +1,4 @@
+
 import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -58,7 +59,7 @@ const Index = () => {
           <p className="text-gray-600">DPC/PROAD</p>
         </header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6 max-w-7xl mx-auto mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
           <MenuCard
             title="Ocorrências"
             description="Registre e acompanhe ocorrências relacionadas aos contratos"
@@ -90,7 +91,7 @@ const Index = () => {
             to="/cadastro-trabalhadores"
           />
           <MenuCard
-            title="FiscalizaAção"
+            title="FiscalizAção"
             description="Avaliações via QR Code distribuídos nos centros"
             icon={QrCode}
             to="/fiscalizacao"
