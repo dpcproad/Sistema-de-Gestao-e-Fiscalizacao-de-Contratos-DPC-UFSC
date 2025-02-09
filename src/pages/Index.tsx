@@ -1,4 +1,5 @@
-import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare } from "lucide-react";
+
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -42,7 +43,7 @@ const Index = () => {
           <p className="text-gray-600">DPC/PROAD</p>
         </header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6 max-w-7xl mx-auto mb-12">
           <MenuCard
             title="Ocorrências"
             description="Registre e acompanhe ocorrências relacionadas aos contratos"
@@ -72,6 +73,12 @@ const Index = () => {
             description="Gerencie o cadastro dos trabalhadores terceirizados"
             icon={Users}
             to="/cadastro-trabalhadores"
+          />
+          <MenuCard
+            title="FiscalizaAção"
+            description="Avaliações via QR Code distribuídos nos centros"
+            icon={QrCode}
+            to="/fiscalizacao"
           />
         </div>
 

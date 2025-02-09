@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,7 @@ import AvaliacaoMensal from "./pages/AvaliacaoMensal";
 import KitFiscalizacao from "./pages/KitFiscalizacao";
 import FaleComGestao from "./pages/FaleComGestao";
 import CadastroTrabalhadores from "./pages/CadastroTrabalhadores";
+import FiscalizaAcao from "./pages/FiscalizaAcao";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
             <Route path="/kit-fiscalizacao" element={<KitFiscalizacao />} />
             <Route path="/fale-com-gestao" element={<FaleComGestao />} />
             <Route path="/cadastro-trabalhadores" element={<CadastroTrabalhadores />} />
+            <Route path="/fiscalizacao" element={<FiscalizaAcao />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
