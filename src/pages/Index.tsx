@@ -1,5 +1,4 @@
-
-import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode } from "lucide-react";
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -30,6 +29,22 @@ const Index = () => {
       message: "Nova resposta à ocorrência #123 - Ausência de funcionário",
       date: "2024-03-13",
       icon: MessageSquare,
+    },
+    {
+      id: 4,
+      type: "fiscalizacao",
+      title: "FiscalizAção - Novo Feedback",
+      message: "Elogio recebido para equipe de limpeza do CCE",
+      date: "2024-03-12",
+      icon: Star,
+    },
+    {
+      id: 5,
+      type: "fiscalizacao",
+      title: "FiscalizAção - Avaliação",
+      message: "Nova avaliação registrada no CTC",
+      date: "2024-03-11",
+      icon: QrCode,
     },
   ];
 
