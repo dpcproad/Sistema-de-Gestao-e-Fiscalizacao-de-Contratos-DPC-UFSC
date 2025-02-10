@@ -1,8 +1,8 @@
-
 import { QrCode, Star, ThumbsDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 interface Feedback {
   id: number;
@@ -22,7 +22,6 @@ interface Feedback {
 }
 
 const FiscalizaAcao = () => {
-  // Example feedback data - in a real app, these would come from an API
   const feedbacks: Feedback[] = [
     {
       id: 1,
@@ -77,10 +76,12 @@ const FiscalizaAcao = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container py-8">
-        <header className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">FiscalizAção</h1>
-          <p className="text-gray-600 mb-8">Sistema de Avaliação por QR Code</p>
-        </header>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">FiscalizAção</h1>
+          <Link to="/" className="text-primary hover:underline">
+            Voltar ao início
+          </Link>
+        </div>
 
         <div className="max-w-4xl mx-auto">
           <Card className="p-6 mb-8">
@@ -88,7 +89,7 @@ const FiscalizaAcao = () => {
               <QrCode className="h-8 w-8 text-primary" />
               <div>
                 <h2 className="text-xl font-semibold">QR Codes de Avaliação</h2>
-                <p className="text-gray-600">Gere QR codes para distribuir em diferentes locais</p>
+                <p className="text-gray-600 mb-8">Gere QR codes para distribuir em diferentes locais</p>
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
@@ -141,4 +142,3 @@ const FiscalizaAcao = () => {
 };
 
 export default FiscalizaAcao;
-

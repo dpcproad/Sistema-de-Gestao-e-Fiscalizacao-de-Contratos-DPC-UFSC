@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 const FaleComGestao = () => {
   const [selectedPerson, setSelectedPerson] = useState<string>("");
@@ -44,9 +45,14 @@ const FaleComGestao = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="container py-8">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
-            Fale com a Gestão e os Fiscais
-          </h1>
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Fale com a Gestão e os Fiscais
+            </h1>
+            <Link to="/" className="text-primary hover:underline">
+              Voltar ao início
+            </Link>
+          </div>
           
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="space-y-6">
