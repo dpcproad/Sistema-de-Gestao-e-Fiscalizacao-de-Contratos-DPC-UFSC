@@ -206,7 +206,7 @@ const CadastroTrabalhadores = () => {
               />
               <Button variant="outline" onClick={handleUpload}>
                 <Upload className="mr-2 h-5 w-5" />
-                Incluir dados
+                Importar dados
               </Button>
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
