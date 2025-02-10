@@ -1,11 +1,26 @@
 
-import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star } from "lucide-react";
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star, Settings } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  // Example notifications - in a real app, these would come from an API
+  // Mock data - in a real app, this would come from an API or context
+  const contractInfo = {
+    number: "23080.123456/2023-12",
+    company: "Empresa Prestadora de Serviços LTDA",
+    object: "Prestação de serviços de limpeza e conservação",
+    validity: "01/01/2024 a 31/12/2024"
+  };
+
   const notifications = [
     {
       id: 1,
@@ -51,6 +66,54 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Contract Info Header */}
+      <div className="bg-white border-b">
+        <div className="container py-4">
+          <div className="flex items-start justify-between">
+            {/* Contract Information */}
+            <div className="space-y-1">
+              <p className="text-sm font-medium">
+                <span className="text-gray-500">Contrato:</span>{" "}
+                <span className="text-gray-900">{contractInfo.number}</span>
+              </p>
+              <p className="text-sm font-medium">
+                <span className="text-gray-500">Contratada:</span>{" "}
+                <span className="text-gray-900">{contractInfo.company}</span>
+              </p>
+              <p className="text-sm font-medium">
+                <span className="text-gray-500">Objeto:</span>{" "}
+                <span className="text-gray-900">{contractInfo.object}</span>
+              </p>
+              <p className="text-sm font-medium">
+                <span className="text-gray-500">Vigência:</span>{" "}
+                <span className="text-gray-900">{contractInfo.validity}</span>
+              </p>
+            </div>
+            
+            {/* Settings Button */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Settings className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  Mudar de Contrato
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Perfil
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600">
+                  Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
+
       <div className="container py-8">
         <header className="text-center mb-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
