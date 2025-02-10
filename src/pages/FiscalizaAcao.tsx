@@ -2,13 +2,40 @@
 import { QrCode, Star, ThumbsDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+
+interface Feedback {
+  id: number;
+  type: "positive" | "negative";
+  occurrenceTypes: {
+    faltaMaterial: boolean;
+    materialForaEspec: boolean;
+    faltaLimpeza: boolean;
+    ausenciaSemReposicao: boolean;
+    atrasoSalarios: boolean;
+    atrasoINSSFGTS: boolean;
+    outros: boolean;
+  };
+  message: string;
+  location: string;
+  date: string;
+}
 
 const FiscalizaAcao = () => {
   // Example feedback data - in a real app, these would come from an API
-  const feedbacks = [
+  const feedbacks: Feedback[] = [
     {
       id: 1,
       type: "positive",
+      occurrenceTypes: {
+        faltaMaterial: false,
+        materialForaEspec: false,
+        faltaLimpeza: true,
+        ausenciaSemReposicao: false,
+        atrasoSalarios: false,
+        atrasoINSSFGTS: false,
+        outros: false,
+      },
       message: "Ótimo atendimento da equipe de limpeza no CCE",
       location: "Centro de Comunicação e Expressão",
       date: "2024-03-15",
@@ -16,17 +43,42 @@ const FiscalizaAcao = () => {
     {
       id: 2,
       type: "negative",
-      message: "Área do hall do CTC precisa de mais atenção na limpeza",
+      occurrenceTypes: {
+        faltaMaterial: true,
+        materialForaEspec: false,
+        faltaLimpeza: true,
+        ausenciaSemReposicao: false,
+        atrasoSalarios: false,
+        atrasoINSSFGTS: false,
+        outros: false,
+      },
+      message: "Área do hall do CTC precisa de mais atenção na limpeza e faltam materiais de limpeza",
       location: "Centro Tecnológico",
       date: "2024-03-14",
     },
   ];
 
+  const getOccurrenceTypes = (types: Feedback["occurrenceTypes"]) => {
+    const typeLabels = {
+      faltaMaterial: "Falta de material",
+      materialForaEspec: "Material fora da especificação",
+      faltaLimpeza: "Falta de limpeza",
+      ausenciaSemReposicao: "Ausência sem reposição",
+      atrasoSalarios: "Atraso de salários",
+      atrasoINSSFGTS: "Atraso de INSS/FGTS",
+      outros: "Outros",
+    };
+
+    return Object.entries(types)
+      .filter(([_, value]) => value)
+      .map(([key]) => typeLabels[key as keyof typeof typeLabels]);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container py-8">
         <header className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">FiscalizaAção</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">FiscalizAção</h1>
           <p className="text-gray-600 mb-8">Sistema de Avaliação por QR Code</p>
         </header>
 
@@ -64,6 +116,13 @@ const FiscalizaAcao = () => {
                       )}
                       <div className="flex-1">
                         <p className="text-gray-900 mb-2">{feedback.message}</p>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {getOccurrenceTypes(feedback.occurrenceTypes).map((type, index) => (
+                            <Badge key={index} variant={feedback.type === "positive" ? "secondary" : "destructive"}>
+                              {type}
+                            </Badge>
+                          ))}
+                        </div>
                         <div className="flex items-center justify-between text-sm text-gray-500">
                           <span>{feedback.location}</span>
                           <span>{new Date(feedback.date).toLocaleDateString("pt-BR")}</span>
@@ -82,3 +141,4 @@ const FiscalizaAcao = () => {
 };
 
 export default FiscalizaAcao;
+
