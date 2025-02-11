@@ -124,7 +124,7 @@ const Ocorrencias = () => {
       responseDeadline
     }
 
-    setOccurrences(prev => [newOccurrence, ...prev])
+    setOccurrences(prev => [...prev, newOccurrence].sort((a, b) => a.sequenceNumber - b.sequenceNumber))
 
     toast({
       title: action === 'save' ? "Ocorrência gravada" : "Ocorrência enviada para preposto",
@@ -461,70 +461,72 @@ const Ocorrencias = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {occurrences.map((occurrence) => (
-                <TableRow key={occurrence.id}>
-                  <TableCell className="font-medium">{occurrence.sequenceNumber}</TableCell>
-                  <TableCell>{occurrence.date}</TableCell>
-                  <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
-                  <TableCell>{occurrence.description}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      {occurrence.responseDeadline}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge 
-                      variant={
-                        occurrence.status === 'enviada' ? 'default' :
-                        occurrence.status === 'resolvida' ? 'secondary' :
-                        occurrence.status === 'nao_resolvida' ? 'destructive' :
-                        'outline'
-                      }
-                    >
-                      {occurrence.status === 'resolvida' ? 'Resolvida' :
-                       occurrence.status === 'nao_resolvida' ? 'Não resolvida' :
-                       occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleEdit(occurrence.id)}
+              {occurrences
+                .sort((a, b) => a.sequenceNumber - b.sequenceNumber)
+                .map((occurrence) => (
+                  <TableRow key={occurrence.id}>
+                    <TableCell className="font-medium">{occurrence.sequenceNumber}</TableCell>
+                    <TableCell>{occurrence.date}</TableCell>
+                    <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
+                    <TableCell>{occurrence.description}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
+                        {occurrence.responseDeadline}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant={
+                          occurrence.status === 'enviada' ? 'default' :
+                          occurrence.status === 'resolvida' ? 'secondary' :
+                          occurrence.status === 'nao_resolvida' ? 'destructive' :
+                          'outline'
+                        }
                       >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDelete(occurrence.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                      {occurrence.status === 'enviada' && (
-                        <>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleAcceptResponse(occurrence.id)}
-                          >
-                            <CheckCircle className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleRejectResponse(occurrence.id)}
-                          >
-                            <XCircle className="h-4 w-4" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        {occurrence.status === 'resolvida' ? 'Resolvida' :
+                         occurrence.status === 'nao_resolvida' ? 'Não resolvida' :
+                         occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleEdit(occurrence.id)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(occurrence.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                        {occurrence.status === 'enviada' && (
+                          <>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleAcceptResponse(occurrence.id)}
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleRejectResponse(occurrence.id)}
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
