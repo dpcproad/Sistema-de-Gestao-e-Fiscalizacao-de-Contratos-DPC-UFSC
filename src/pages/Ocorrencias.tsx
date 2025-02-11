@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button"
 import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog"
@@ -26,6 +27,7 @@ import {
 
 interface Occurrence {
   id: string
+  sequenceNumber: number
   date: string
   types: {
     faltaMaterial: boolean
@@ -107,9 +109,13 @@ const Ocorrencias = () => {
     }
 
     const responseDeadline = calculateResponseDeadline(selectedItems)
+    const nextSequenceNumber = occurrences.length > 0 
+      ? Math.max(...occurrences.map(o => o.sequenceNumber)) + 1 
+      : 1
 
     const newOccurrence: Occurrence = {
       id: Math.random().toString(36).substr(2, 9),
+      sequenceNumber: nextSequenceNumber,
       date: new Date().toLocaleString(),
       types: selectedItems,
       description: description.trim(),
@@ -445,6 +451,7 @@ const Ocorrencias = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-20">Nº</TableHead>
                 <TableHead>Data</TableHead>
                 <TableHead>Tipos</TableHead>
                 <TableHead>Descrição</TableHead>
@@ -456,6 +463,7 @@ const Ocorrencias = () => {
             <TableBody>
               {occurrences.map((occurrence) => (
                 <TableRow key={occurrence.id}>
+                  <TableCell className="font-medium">{occurrence.sequenceNumber}</TableCell>
                   <TableCell>{occurrence.date}</TableCell>
                   <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
                   <TableCell>{occurrence.description}</TableCell>
