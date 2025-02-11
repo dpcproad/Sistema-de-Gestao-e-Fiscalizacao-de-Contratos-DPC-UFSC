@@ -478,10 +478,16 @@ const Ocorrencias = () => {
                     <TableCell>
                       <Badge 
                         variant={
-                          occurrence.status === 'enviada' ? 'default' :
-                          occurrence.status === 'resolvida' ? 'secondary' :
+                          occurrence.status === 'resolvida' ? 'default' :
                           occurrence.status === 'nao_resolvida' ? 'destructive' :
                           'outline'
+                        }
+                        className={
+                          occurrence.status === 'resolvida' 
+                            ? 'bg-[#F2FCE2] hover:bg-[#F2FCE2] text-green-700 border-green-200' 
+                            : occurrence.status === 'nao_resolvida'
+                            ? 'bg-red-500 hover:bg-red-500 text-white border-red-400'
+                            : ''
                         }
                       >
                         {occurrence.status === 'resolvida' ? 'Resolvida' :
