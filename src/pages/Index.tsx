@@ -142,7 +142,7 @@ const Index = () => {
             to="/kit-fiscalizacao"
           />
           <MenuCard
-            title="Fale com a Gestão"
+            title="Fale com a Gestão e Fiscalização do contrato"
             description="Chat direto com gestores e fiscais do contrato"
             icon={MessageCircle}
             to="/fale-com-gestao"

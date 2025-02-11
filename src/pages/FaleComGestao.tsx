@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Select,
@@ -47,7 +48,7 @@ const FaleComGestao = () => {
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold text-gray-900">
-              Fale com a Gestão e os Fiscais
+              Fale com a Gestão e Fiscalização do contrato
             </h1>
             <Link to="/" className="text-primary hover:underline">
               Voltar ao início
