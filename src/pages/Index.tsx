@@ -155,7 +155,7 @@ const Index = () => {
           />
           <MenuCard
             title="FiscalizAção"
-            description="Avaliações via QR Code distribuídos nos centros"
+            description="Avaliações dos usuários via QR Code distribuídos nos centros e unidades"
             icon={QrCode}
             to="/fiscalizacao"
           />
