@@ -1,7 +1,10 @@
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast"
+import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -31,6 +34,7 @@ interface Occurrence {
 
 const AvaliacaoMensal = () => {
   const { toast } = useToast()
+  const [observations, setObservations] = useState("")
   const allOccurrences: Occurrence[] = JSON.parse(localStorage.getItem('occurrences') || '[]')
   const unresolvedOccurrences = allOccurrences.filter(occ => occ.status === 'nao_resolvida')
 
@@ -75,7 +79,10 @@ const AvaliacaoMensal = () => {
   return (
     <div className="container py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Avaliação Mensal</h1>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold text-gray-900">Avaliação Mensal</h1>
+          <p className="text-gray-500">Competência: {currentMonth}</p>
+        </div>
         <Link to="/" className="text-primary hover:underline">
           Voltar ao início
         </Link>
@@ -154,6 +161,20 @@ const AvaliacaoMensal = () => {
             </CardContent>
           </Card>
         </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Observações</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Textarea
+              placeholder="Digite aqui as observações adicionais sobre a avaliação mensal..."
+              value={observations}
+              onChange={(e) => setObservations(e.target.value)}
+              className="min-h-[100px]"
+            />
+          </CardContent>
+        </Card>
 
         <div className="flex justify-end">
           <Dialog>
