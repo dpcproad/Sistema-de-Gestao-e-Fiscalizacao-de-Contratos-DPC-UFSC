@@ -24,9 +24,11 @@ interface HeaderProps {
     role: string;
     unit: string;
   };
+  // Added onSectorSelect callback function that components can use
+  onSectorSelect?: (sector: string) => void;
 }
 
-export function Header({ contractInfo, userProfile }: HeaderProps) {
+export function Header({ contractInfo, userProfile, onSectorSelect }: HeaderProps) {
   return (
     <div className="bg-white border-b">
       <div className="container py-4">
