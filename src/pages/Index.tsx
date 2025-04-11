@@ -1,8 +1,9 @@
-
-import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star, Settings } from "lucide-react";
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Header } from "@/components/Header";
+import { Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,13 @@ const Index = () => {
     company: "Empresa Prestadora de Serviços LTDA",
     object: "Prestação de serviços de limpeza e conservação",
     validity: "01/01/2024 a 31/12/2024"
+  };
+
+  // Mock user profile data
+  const userProfile = {
+    name: "João da Silva",
+    role: "Fiscal Setorial",
+    unit: "Reitoria I"
   };
 
   const notifications = [
@@ -66,53 +74,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Contract Info Header */}
-      <div className="bg-white border-b">
-        <div className="container py-4">
-          <div className="flex items-start justify-between">
-            {/* Contract Information */}
-            <div className="space-y-1">
-              <p className="text-sm font-medium">
-                <span className="text-gray-500">Contrato:</span>{" "}
-                <span className="text-gray-900">{contractInfo.number}</span>
-              </p>
-              <p className="text-sm font-medium">
-                <span className="text-gray-500">Contratada:</span>{" "}
-                <span className="text-gray-900">{contractInfo.company}</span>
-              </p>
-              <p className="text-sm font-medium">
-                <span className="text-gray-500">Objeto:</span>{" "}
-                <span className="text-gray-900">{contractInfo.object}</span>
-              </p>
-              <p className="text-sm font-medium">
-                <span className="text-gray-500">Vigência:</span>{" "}
-                <span className="text-gray-900">{contractInfo.validity}</span>
-              </p>
-            </div>
-            
-            {/* Settings Button */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Settings className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  Mudar de Contrato
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Perfil
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
-                  Sair
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </div>
+      {/* Use the new Header component */}
+      <Header contractInfo={contractInfo} userProfile={userProfile} />
 
       <div className="container py-8">
         <header className="text-center mb-12">
