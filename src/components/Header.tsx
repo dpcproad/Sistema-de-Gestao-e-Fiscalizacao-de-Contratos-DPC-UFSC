@@ -8,7 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Settings, User } from "lucide-react";
+import { Settings, User, Building } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface ContractInfo {
   number: string;
@@ -60,7 +61,10 @@ export function Header({ contractInfo, userProfile, onSectorSelect }: HeaderProp
               <div className="text-right mr-2">
                 <p className="text-sm font-medium text-gray-900">{userProfile.name}</p>
                 <p className="text-xs text-gray-500">{userProfile.role}</p>
-                <p className="text-xs text-gray-500">{userProfile.unit}</p>
+                <Badge variant="outline" className="mt-1 flex items-center gap-1">
+                  <Building className="h-3 w-3" />
+                  <span>{userProfile.unit}</span>
+                </Badge>
               </div>
               <Avatar>
                 <AvatarFallback className="bg-primary text-primary-foreground">
