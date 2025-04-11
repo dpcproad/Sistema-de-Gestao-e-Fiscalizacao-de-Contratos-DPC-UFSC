@@ -1,6 +1,5 @@
-
 import { Button } from "@/components/ui/button"
-import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock } from "lucide-react"
+import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock, MapPin } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -29,6 +28,7 @@ interface Occurrence {
   id: string
   sequenceNumber: number
   date: string
+  sector: string
   types: {
     faltaMaterial: boolean
     materialForaEspec: boolean
@@ -47,6 +47,7 @@ interface Occurrence {
 const Ocorrencias = () => {
   const [open, setOpen] = useState(false)
   const [description, setDescription] = useState("")
+  const [sector, setSector] = useState("")
   const { toast } = useToast()
   const [occurrences, setOccurrences] = useState<Occurrence[]>([])
   const [attachments, setAttachments] = useState<File[]>([])
@@ -63,6 +64,23 @@ const Ocorrencias = () => {
     atrasoINSSFGTS: false,
     outros: false,
   })
+
+  // Mock data for sectors/locations
+  const sectors = [
+    { id: "cce", name: "CCE - Centro de Comunicação e Expressão" },
+    { id: "ctc", name: "CTC - Centro Tecnológico" },
+    { id: "ccs", name: "CCS - Centro de Ciências da Saúde" },
+    { id: "cds", name: "CDS - Centro de Desportos" },
+    { id: "cfh", name: "CFH - Centro de Filosofia e Ciências Humanas" },
+    { id: "cca", name: "CCA - Centro de Ciências Agrárias" },
+    { id: "ccj", name: "CCJ - Centro de Ciências Jurídicas" },
+    { id: "ced", name: "CED - Centro de Ciências da Educação" },
+    { id: "cfm", name: "CFM - Centro de Ciências Físicas e Matemáticas" },
+    { id: "cse", name: "CSE - Centro Socioeconômico" },
+    { id: "reitoria", name: "Reitoria" },
+    { id: "bu", name: "BU - Biblioteca Universitária" },
+    { id: "ru", name: "RU - Restaurante Universitário" },
+  ]
 
   const calculateResponseDeadline = (types: Occurrence['types']): string => {
     const currentDate = new Date()
@@ -108,6 +126,15 @@ const Ocorrencias = () => {
       return
     }
 
+    if (!sector) {
+      toast({
+        title: "Erro",
+        description: "Selecione o setor/local da ocorrência",
+        variant: "destructive"
+      })
+      return
+    }
+
     const responseDeadline = calculateResponseDeadline(selectedItems)
     const nextSequenceNumber = occurrences.length > 0 
       ? Math.max(...occurrences.map(o => o.sequenceNumber)) + 1 
@@ -117,6 +144,7 @@ const Ocorrencias = () => {
       id: Math.random().toString(36).substr(2, 9),
       sequenceNumber: nextSequenceNumber,
       date: new Date().toLocaleString(),
+      sector,
       types: selectedItems,
       description: description.trim(),
       status: action === 'save' ? 'gravada' : 'enviada',
@@ -133,6 +161,7 @@ const Ocorrencias = () => {
 
     setOpen(false)
     setDescription("")
+    setSector("")
     setAttachments([])
     setSelectedItems({
       faltaMaterial: false,
@@ -201,7 +230,10 @@ const Ocorrencias = () => {
   return (
     <div className="container py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Ocorrências</h1>
+        <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+          Ocorrências 
+          <span className="text-lg ml-2 font-normal text-gray-500">por setor/local</span>
+        </h1>
         <div className="flex gap-4 items-center">
           <Dialog>
             <DialogTrigger asChild>
@@ -255,6 +287,19 @@ const Ocorrencias = () => {
                   </Select>
                 </div>
                 <div className="flex flex-col gap-2">
+                  <label htmlFor="sector">Setor/Local</label>
+                  <Select value={selectedType} onValueChange={setSelectedType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o setor/local" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {sectors.map(sector => (
+                        <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col gap-2">
                   <label htmlFor="status">Status</label>
                   <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                     <SelectTrigger>
@@ -287,6 +332,19 @@ const Ocorrencias = () => {
                 <DialogTitle>Nova Ocorrência</DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 py-4">
+                <div className="space-y-2">
+                  <Label htmlFor="sector">Setor/Local</Label>
+                  <Select value={sector} onValueChange={setSector}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o setor/local" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {sectors.map(sector => (
+                        <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-4">
                   <Label>Tipo de Ocorrência</Label>
                   <div className="space-y-2">
@@ -453,6 +511,7 @@ const Ocorrencias = () => {
               <TableRow>
                 <TableHead className="w-20">Nº</TableHead>
                 <TableHead>Data</TableHead>
+                <TableHead>Setor/Local</TableHead>
                 <TableHead>Tipos</TableHead>
                 <TableHead>Descrição</TableHead>
                 <TableHead>Prazo de Resposta</TableHead>
@@ -463,76 +522,85 @@ const Ocorrencias = () => {
             <TableBody>
               {occurrences
                 .sort((a, b) => a.sequenceNumber - b.sequenceNumber)
-                .map((occurrence) => (
-                  <TableRow key={occurrence.id}>
-                    <TableCell className="font-medium">{occurrence.sequenceNumber}</TableCell>
-                    <TableCell>{occurrence.date}</TableCell>
-                    <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
-                    <TableCell>{occurrence.description}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        {occurrence.responseDeadline}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant={
-                          occurrence.status === 'resolvida' ? 'default' :
-                          occurrence.status === 'nao_resolvida' ? 'destructive' :
-                          'outline'
-                        }
-                        className={
-                          occurrence.status === 'resolvida' 
-                            ? 'bg-[#F2FCE2] hover:bg-[#F2FCE2] text-green-700 border-green-200' 
-                            : occurrence.status === 'nao_resolvida'
-                            ? 'bg-red-500 hover:bg-red-500 text-white border-red-400'
-                            : ''
-                        }
-                      >
-                        {occurrence.status === 'resolvida' ? 'Resolvida' :
-                         occurrence.status === 'nao_resolvida' ? 'Não resolvida' :
-                         occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEdit(occurrence.id)}
+                .map((occurrence) => {
+                  const sectorName = sectors.find(s => s.id === occurrence.sector)?.name || occurrence.sector;
+                  return (
+                    <TableRow key={occurrence.id}>
+                      <TableCell className="font-medium">{occurrence.sequenceNumber}</TableCell>
+                      <TableCell>{occurrence.date}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-gray-500" />
+                          {sectorName}
+                        </div>
+                      </TableCell>
+                      <TableCell>{getOccurrenceTypes(occurrence.types)}</TableCell>
+                      <TableCell>{occurrence.description}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          {occurrence.responseDeadline}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant={
+                            occurrence.status === 'resolvida' ? 'default' :
+                            occurrence.status === 'nao_resolvida' ? 'destructive' :
+                            'outline'
+                          }
+                          className={
+                            occurrence.status === 'resolvida' 
+                              ? 'bg-[#F2FCE2] hover:bg-[#F2FCE2] text-green-700 border-green-200' 
+                              : occurrence.status === 'nao_resolvida'
+                              ? 'bg-red-500 hover:bg-red-500 text-white border-red-400'
+                              : ''
+                          }
                         >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(occurrence.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                        {occurrence.status === 'enviada' && (
-                          <>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleAcceptResponse(occurrence.id)}
-                            >
-                              <CheckCircle className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleRejectResponse(occurrence.id)}
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </Button>
-                          </>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                          {occurrence.status === 'resolvida' ? 'Resolvida' :
+                           occurrence.status === 'nao_resolvida' ? 'Não resolvida' :
+                           occurrence.status.charAt(0).toUpperCase() + occurrence.status.slice(1)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleEdit(occurrence.id)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(occurrence.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                          {occurrence.status === 'enviada' && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleAcceptResponse(occurrence.id)}
+                              >
+                                <CheckCircle className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleRejectResponse(occurrence.id)}
+                              >
+                                <XCircle className="h-4 w-4" />
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </div>
