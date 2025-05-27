@@ -131,7 +131,7 @@ export const ListaMateriais = ({ materiais, onEditar, onReceber, onRecusar }: Li
                     variant="destructive"
                     size="sm"
                     onClick={() => onRecusar(material)}
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white"
                   >
                     <X className="h-4 w-4" />
                     Recusar/Desacordo
