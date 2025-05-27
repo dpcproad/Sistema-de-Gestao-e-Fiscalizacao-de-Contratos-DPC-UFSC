@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -29,10 +28,10 @@ const ControleMateriais = () => {
       unidadeMedida: "Resma",
       quantidade: 10,
       data: "2024-03-20",
-      responsavelEntrega: "João Silva",
+      responsavelEntrega: "fiscal responsável pelo recebimento",
       local: "Almoxarifado Central",
       status: "pendente",
-      remetente: "Departamento de Compras"
+      remetente: "João empresa X"
     },
     {
       id: "2",
@@ -40,10 +39,10 @@ const ControleMateriais = () => {
       unidadeMedida: "Unidade",
       quantidade: 50,
       data: "2024-03-19",
-      responsavelEntrega: "Maria Santos",
+      responsavelEntrega: "fiscal responsável pelo recebimento",
       local: "Reitoria I - Sala 205",
       status: "recebido",
-      remetente: "Setor de Materiais",
+      remetente: "João empresa X",
       dataRecebimento: "2024-03-19"
     }
   ]);
@@ -88,7 +87,7 @@ const ControleMateriais = () => {
         ...dados,
         id: Date.now().toString(),
         status: 'pendente',
-        remetente: userProfile.name
+        remetente: "João empresa X"
       };
       setMateriais(prev => [...prev, novoMaterial]);
     }
