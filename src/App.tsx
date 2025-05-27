@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import FaleComGestao from "./pages/FaleComGestao";
 import CadastroTrabalhadores from "./pages/CadastroTrabalhadores";
 import FiscalizaAcao from "./pages/FiscalizaAcao";
 import NotFound from "./pages/NotFound";
+import ControleMateriais from "./pages/ControleMateriais";
 
 function App() {
   const queryClient = new QueryClient({
@@ -36,6 +36,7 @@ function App() {
             <Route path="/fale-com-gestao" element={<FaleComGestao />} />
             <Route path="/cadastro-trabalhadores" element={<CadastroTrabalhadores />} />
             <Route path="/fiscalizacao" element={<FiscalizaAcao />} />
+            <Route path="/controle-materiais" element={<ControleMateriais />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

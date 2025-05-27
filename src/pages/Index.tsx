@@ -1,4 +1,4 @@
-import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star } from "lucide-react";
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star, Package } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -115,6 +115,12 @@ const Index = () => {
             description="Gerencie o cadastro dos trabalhadores terceirizados"
             icon={Users}
             to="/cadastro-trabalhadores"
+          />
+          <MenuCard
+            title="Controle de Materiais e Insumos"
+            description="Gerencie o recebimento e controle de materiais e insumos"
+            icon={Package}
+            to="/controle-materiais"
           />
           <MenuCard
             title="FiscalizAção"
