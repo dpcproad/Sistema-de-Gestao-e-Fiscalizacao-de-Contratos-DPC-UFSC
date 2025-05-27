@@ -28,7 +28,7 @@ const ControleMateriais = () => {
       unidadeMedida: "Resma",
       quantidade: 10,
       data: "2024-03-20",
-      responsavelEntrega: "fiscal responsável pelo recebimento",
+      responsavelEntrega: "Roberto Silva",
       local: "Almoxarifado Central",
       status: "pendente",
       remetente: "João empresa X"
@@ -39,7 +39,7 @@ const ControleMateriais = () => {
       unidadeMedida: "Unidade",
       quantidade: 50,
       data: "2024-03-19",
-      responsavelEntrega: "fiscal responsável pelo recebimento",
+      responsavelEntrega: "Maria Santos",
       local: "Reitoria I - Sala 205",
       status: "recebido",
       remetente: "João empresa X",

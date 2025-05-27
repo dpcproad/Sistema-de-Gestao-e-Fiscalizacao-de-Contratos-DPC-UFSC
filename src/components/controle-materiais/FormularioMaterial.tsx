@@ -155,10 +155,10 @@ export const FormularioMaterial = ({
                 name="responsavelEntrega"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Responsável pela Entrega</FormLabel>
+                    <FormLabel>Fiscal responsável pelo recebimento</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Nome do responsável..."
+                        placeholder="Nome do fiscal responsável..."
                         {...field}
                       />
                     </FormControl>

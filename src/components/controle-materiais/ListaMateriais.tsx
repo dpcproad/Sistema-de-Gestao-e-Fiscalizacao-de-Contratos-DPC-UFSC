@@ -68,7 +68,7 @@ export const ListaMateriais = ({ materiais, onEditar, onReceber, onRecusar }: Li
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-gray-500" />
                 <span className="text-sm">
-                  <strong>Responsável:</strong> {material.responsavelEntrega}
+                  <strong>Fiscal responsável pelo recebimento:</strong> {material.responsavelEntrega}
                 </span>
               </div>
               
