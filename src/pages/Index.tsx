@@ -1,4 +1,4 @@
-import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star, Package } from "lucide-react";
+import { ClipboardList, BarChart2, FileBox, MessageCircle, Users, Bell, AlertCircle, MessageSquare, QrCode, Star, Package, FileSpreadsheet } from "lucide-react";
 import MenuCard from "@/components/MenuCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -127,6 +127,12 @@ const Index = () => {
             description="Avaliações dos usuários via QR Code distribuídos nos centros e unidades"
             icon={QrCode}
             to="/fiscalizacao"
+          />
+          <MenuCard
+            title="Relatórios Gerenciais"
+            description="Gere relatórios consolidados de todos os módulos do sistema"
+            icon={FileSpreadsheet}
+            to="/relatorios-gerenciais"
           />
         </div>
 

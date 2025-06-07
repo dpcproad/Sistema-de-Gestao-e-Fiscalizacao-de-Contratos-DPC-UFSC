@@ -16,6 +16,7 @@ import CadastroTrabalhadores from "./pages/CadastroTrabalhadores";
 import FiscalizaAcao from "./pages/FiscalizaAcao";
 import NotFound from "./pages/NotFound";
 import ControleMateriais from "./pages/ControleMateriais";
+import RelatoriosGerenciais from "./pages/RelatoriosGerenciais";
 
 function AppRoutes() {
   const { isAuthenticated } = useAuth();
@@ -64,6 +65,11 @@ function AppRoutes() {
       <Route path="/controle-materiais" element={
         <ProtectedRoute>
           <ControleMateriais />
+        </ProtectedRoute>
+      } />
+      <Route path="/relatorios-gerenciais" element={
+        <ProtectedRoute>
+          <RelatoriosGerenciais />
         </ProtectedRoute>
       } />
       <Route path="*" element={<NotFound />} />

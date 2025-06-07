@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { ListaMateriais } from "@/components/controle-materiais/ListaMateriais";
 import { FormularioMaterial } from "@/components/controle-materiais/FormularioMaterial";
@@ -136,13 +137,21 @@ const ControleMateriais = () => {
       
       <div className="container py-8">
         <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Controle de Materiais e Insumos
-            </h1>
-            <p className="text-gray-600 mt-2">
-              Gestão de materiais para {userProfile.unit}
-            </p>
+          <div className="flex items-center gap-4">
+            <Link to="/">
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Voltar ao início
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Controle de Materiais e Insumos
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Gestão de materiais para {userProfile.unit}
+              </p>
+            </div>
           </div>
           
           <Button 
