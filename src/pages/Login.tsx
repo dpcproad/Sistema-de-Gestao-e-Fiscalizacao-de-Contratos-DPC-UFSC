@@ -48,7 +48,7 @@ const Login = () => {
             <img
               src="/lovable-uploads/98ce9cf8-922c-41f1-9471-f3d206eb09ff.png"
               alt="FiscALLz Logo"
-              className="w-20 h-20"
+              className="w-32 h-32"
             />
           </div>
           <CardTitle className="text-2xl font-bold">
