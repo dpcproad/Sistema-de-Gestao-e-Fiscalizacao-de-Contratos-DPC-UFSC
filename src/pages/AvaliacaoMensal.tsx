@@ -35,7 +35,18 @@ interface Occurrence {
 const AvaliacaoMensal = () => {
   const { toast } = useToast()
   const [observations, setObservations] = useState("")
-  const allOccurrences: Occurrence[] = JSON.parse(localStorage.getItem('occurrences') || '[]')
+  
+  // Safely access localStorage with error handling
+  const getAllOccurrences = () => {
+    try {
+      return JSON.parse(localStorage.getItem('occurrences') || '[]')
+    } catch (error) {
+      console.log('Não foi possível acessar localStorage:', error)
+      return []
+    }
+  }
+  
+  const allOccurrences: Occurrence[] = getAllOccurrences()
   const unresolvedOccurrences = allOccurrences.filter(occ => occ.status === 'nao_resolvida')
 
   // Mock contract and user data (would come from a context or API in a real app)
