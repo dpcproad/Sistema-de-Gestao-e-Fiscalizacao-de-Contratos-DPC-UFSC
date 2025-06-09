@@ -8,8 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Settings, User, Building } from "lucide-react";
+import { Settings, User, Building, LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ContractInfo {
   number: string;
@@ -30,6 +31,12 @@ interface HeaderProps {
 }
 
 export function Header({ contractInfo, userProfile, onSectorSelect }: HeaderProps) {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="bg-white border-b">
       <div className="container py-4">
@@ -88,7 +95,8 @@ export function Header({ contractInfo, userProfile, onSectorSelect }: HeaderProp
                   Perfil
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
                   Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>
