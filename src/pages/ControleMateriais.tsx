@@ -25,26 +25,26 @@ const ControleMateriais = () => {
   const [materiais, setMateriais] = useState<Material[]>([
     {
       id: "1",
-      descricao: "Papel A4 75g",
-      unidadeMedida: "Resma",
-      quantidade: 10,
-      data: "2024-03-20",
-      responsavelEntrega: "Roberto Silva",
-      local: "Almoxarifado Central",
+      descricao: "Papel higiênico folha simples 300m",
+      unidadeMedida: "Rolos",
+      quantidade: 8,
+      data: "2025-06-11",
+      responsavelEntrega: "João da Silva",
+      local: "Reitoria I",
       status: "pendente",
-      remetente: "João empresa X"
+      remetente: "Manoel empresa X"
     },
     {
       id: "2",
-      descricao: "Canetas esferográficas azuis",
-      unidadeMedida: "Unidade",
-      quantidade: 50,
-      data: "2024-03-19",
-      responsavelEntrega: "Maria Santos",
-      local: "Reitoria I - Sala 205",
+      descricao: "Papel toalha",
+      unidadeMedida: "Rolos",
+      quantidade: 8,
+      data: "2025-06-11",
+      responsavelEntrega: "João da Silva",
+      local: "Reitoria I",
       status: "recebido",
-      remetente: "João empresa X",
-      dataRecebimento: "2024-03-19"
+      remetente: "Manoel empresa X",
+      dataRecebimento: "2025-06-11"
     }
   ]);
 
@@ -88,7 +88,7 @@ const ControleMateriais = () => {
         ...dados,
         id: Date.now().toString(),
         status: 'pendente',
-        remetente: "João empresa X"
+        remetente: "Manoel empresa X"
       };
       setMateriais(prev => [...prev, novoMaterial]);
     }
