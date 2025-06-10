@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button"
 import { Plus, Edit, Trash2, CheckCircle, XCircle, Clock, MapPin } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog"
@@ -600,34 +601,42 @@ const Ocorrencias = () => {
                         <TableCell>
                           <div className="flex gap-2">
                             <Button
-                              variant="ghost"
-                              size="icon"
+                              variant="outline"
+                              size="default"
                               onClick={() => handleEdit(occurrence.id)}
+                              className="h-10 px-4"
                             >
-                              <Edit className="h-4 w-4" />
+                              <Edit className="h-4 w-4 mr-2" />
+                              Editar
                             </Button>
                             <Button
-                              variant="ghost"
-                              size="icon"
+                              variant="outline"
+                              size="default"
                               onClick={() => handleDelete(occurrence.id)}
+                              className="h-10 px-4"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Excluir
                             </Button>
                             {occurrence.status === 'enviada' && (
                               <>
                                 <Button
-                                  variant="ghost"
-                                  size="icon"
+                                  variant="default"
+                                  size="default"
                                   onClick={() => handleAcceptResponse(occurrence.id)}
+                                  className="h-10 px-4 bg-green-600 hover:bg-green-700 text-white"
                                 >
-                                  <CheckCircle className="h-4 w-4" />
+                                  <CheckCircle className="h-4 w-4 mr-2" />
+                                  Aceitar
                                 </Button>
                                 <Button
-                                  variant="ghost"
-                                  size="icon"
+                                  variant="destructive"
+                                  size="default"
                                   onClick={() => handleRejectResponse(occurrence.id)}
+                                  className="h-10 px-4 bg-red-600 hover:bg-red-700 text-white"
                                 >
-                                  <XCircle className="h-4 w-4" />
+                                  <XCircle className="h-4 w-4 mr-2" />
+                                  Recusar
                                 </Button>
                               </>
                             )}
